@@ -114,7 +114,7 @@ au BufNewFile,BufRead *.ldg,*.ledger setf ledger | comp ledger
 nnoremap <leader>g :GundoToggle<CR>
 
 
-" MY_OH_ZSH: {{{1
+" GENERAL_CONFIGURATION: {{{1
 " doc {{{2
 " URL: http://vim.wikia.com/wiki/Example_vimrc
 " Authors: http://vim.wikia.com/wiki/Vim_on_Freenode
@@ -222,6 +222,17 @@ set notimeout ttimeout ttimeoutlen=200
 "
 " Use <F11> to toggle between 'paste' and 'nopaste'
 set pastetoggle=<F11>
+"
+" FILES: {{{1
+" Settins {{{2
+" Search down into subfolder
+" provides tab-completion for all files-related task
+" :b substring --> ouvre le bon buffer
+set path+=**                                     " recursive subdirectory
+" doc {{{2
+" https://www.youtube.com/watch?v=XA2WjJbmmoM&list=PL8tzorAO7s0jy7DQ3Q0FwF3BnXGQnDirs
+" hit tab to :find by partial match
+" use * to make it fuzzy
 
 " PYTHON: {{{1
 " Python setting {{{2
@@ -239,9 +250,9 @@ let python_highlight_all=1
 
 " SNIPPETS: {{{1
 " SNIPPETS LaTeX {{{2
-nnoremap ,tabular :-1read $HOME/.vim/snippets/LaTeX/tabular.tex<CR>
-nnoremap ,template :-1read $HOME/.vim/snippets/LaTeX/template.tex<CR>
-nnoremap ,makefile :-1read $HOME/.vim/snippets/LaTeX/makefile<CR>
+nnoremap ,tabular  :-1read $HOME/.vim/bundle/tex/ftdetect/tabular.tex<CR>
+nnoremap ,template :-1read $HOME/.vim/bundle/tex/ftdetect/template.tex<CR>
+nnoremap ,makefile :-1read $HOME/.vim/bundle/tex/ftdetect/makefile<CR>
 
 " VARIABLES:  {{{1
 " learnvimscriptthehardway 1. Echoing messages {{{2
@@ -251,15 +262,8 @@ let bonjour = "Pauffiner le vimrc"
 echo bonjour
 
 " learnvimscriptthehardway 7. Editing vimrc {{{2
-" -------------------------
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>ev :e $MYVIMRC<cr>
-inoremap jk <esc>
-vnoremap jk <esc>
-inoremap <esc> <Nop>
-vnoremap <esc> <Nop>
-map <C-i> <Nop>
-
 " DISPLAY_OPTION: {{{1
 " settings {{{2
 set encoding=utf-8
@@ -287,6 +291,11 @@ nmap <F9> :TagbarToggle<CR>
 nnoremap <leader>trailing /\s\+$/<CR>
 nnoremap ,sv :source $MYVIMRC<cr>
 nnoremap ,ev :edit $MYVIMRC<CR>
+"
+" keys {{{2
+inoremap jk <esc>
+vnoremap jk <esc>
+
 " map <C-L> (redraw screen) to also turn off search highlighting until the next search
 nnoremap <C-L> :nohl<CR><C-L>
 " unmap ex mode: 'Type visual to go into Normal mode.

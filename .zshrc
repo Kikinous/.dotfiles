@@ -97,6 +97,7 @@ export PKG_CONFIG_PATH="/opt/local/lib/pkgconfig"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias stat="stat -x"
+alias tree="tree -C"
 
 # shell scripts {{{1
 # oh-my-zsh.sh {{{2
