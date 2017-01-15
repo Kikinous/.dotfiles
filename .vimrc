@@ -142,22 +142,6 @@ syntax on
 " Recommandées {{{2
 " ======================
 "
-" These are highly recommended options.
-" Vim with default settings does not allow easy switching between multiple files
-" in the same editor window. Users can use multiple split windows or multiple
-" tab pages to edit multiple files, but it is still best to enable an option to
-" allow easier switching between files.
-"
-" One such option is the 'hidden' option, which allows you to re-use the same
-" window and switch from an unsaved buffer without saving it first. Also allows
-" you to keep an undo history for multiple files when re-using the same window
-" in this way. Note that using persistent undo also lets you undo in multiple
-" files even in the same window, but is less efficient and is actually designed
-" for keeping undo history after closing Vim entirely. Vim will complain if you
-" try to quit without saving, and swap files will keep you safe if your computer
-" crashes.
-set hidden
-"
 " Note that not everyone likes working this way (with the hidden option).
 " Alternatives include using tabs or split windows instead of re-using the same
 " window as mentioned above, and/or either of the following options:
@@ -178,9 +162,7 @@ set hlsearch
 " such, it may be a good idea to disable them and use the securemodelines
 " script, <http://www.vim.org/scripts/script.php?script_id=1876>.
 " set nomodeline
-" j'ai ajoute ca pour faire marcher vim:filetype=ledger
-set modelines=1
-
+"
 
 " Utiles {{{2
 " ===========
@@ -241,23 +223,6 @@ set notimeout ttimeout ttimeoutlen=200
 " Use <F11> to toggle between 'paste' and 'nopaste'
 set pastetoggle=<F11>
 
-
-" Indentation {{{2
-" Indentation settings according to personal preference.
-"
-" Indentation settings for using 4 spaces instead of tabs.
-" Do not change 'tabstop' from its default value of 8 with this setup.
-set shiftwidth=4
-set softtabstop=4
-set expandtab
-"
-" Indentation settings for using hard tabs for indent. Display tabs as
-" four characters wide.
-set shiftwidth=4
-set tabstop=4
-
-
-
 " PYTHON: {{{1
 " Python setting {{{2
 let python_highlight_all=1
@@ -278,10 +243,12 @@ nnoremap ,tabular :-1read $HOME/.vim/snippets/LaTeX/tabular.tex<CR>
 nnoremap ,template :-1read $HOME/.vim/snippets/LaTeX/template.tex<CR>
 nnoremap ,makefile :-1read $HOME/.vim/snippets/LaTeX/makefile<CR>
 
-" LEARNVIMSCRIPTTHEHARDWAY:  {{{1
+" VARIABLES:  {{{1
 " learnvimscriptthehardway 1. Echoing messages {{{2
 " ------------------------
-echo "Pauffiner le vimrc"
+let bonjour = "Pauffiner le vimrc"
+"silent echo bonjour                             " silent = pour eviter le prompt
+echo bonjour
 
 " learnvimscriptthehardway 7. Editing vimrc {{{2
 " -------------------------
@@ -298,9 +265,16 @@ map <C-i> <Nop>
 set encoding=utf-8
 " pas de retour à la ligne (boolean option)
 set nowrap
+" set shiftwidth=4
+set softtabstop=4                                " number of spaces in tab when editing
+set expandtab                                    " tabs are spaces
+set tabstop=4                                    " number of visual spaces when editing
+set colorcolumn=100                              " Marque la 120eme colonnes
+autocmd BufEnter,InsertChange * 2mat ErrorMsg '\%101v.'
+
 
 " MAPPING: {{{1
-" settings{{{2
+" Plugins {{{2
 let mapleader= ","
 nmap <F2> :call Flake8()<CR>
 nmap <F3> :NumbersToggle<CR>
@@ -309,20 +283,19 @@ nmap <F7> :NERDTreeToggle<CR>
 nmap <F8> :IndentGuidesToggle<CR>
 nmap <F9> :TagbarToggle<CR>
 
+" Outils {{{2
 nnoremap <leader>trailing /\s\+$/<CR>
-
-" Map Y to act like D and C, i.e. eo yank until EOL, rather than act as yy,
-" map Y y$
-map <C-L> (redraw screen) to also turn off search highlighting until the next search
+nnoremap ,sv :source $MYVIMRC<cr>
+nnoremap ,ev :edit $MYVIMRC<CR>
+" map <C-L> (redraw screen) to also turn off search highlighting until the next search
 nnoremap <C-L> :nohl<CR><C-L>
 " unmap ex mode: 'Type visual to go into Normal mode.
+
+" Anti-erreurs {{{2
 nnoremap Q <nop>
 
 " AUTOCOMMANDS: {{{1
 " Setings: {{{2
-"set colorcolumn=80
-"Marque la 120eme colonnes
-autocmd WinEnter * 2mat ErrorMsg '\%81v.'
 "Pour la coloration syntaxique Arduino
 "autocmd! BufNewFile,BufRead *.ino setlocal ft=arduino
 au BufNewFile,BufReadPost *.ino,*.pde set filetype=cpp                             "handle arduino file as cpp file
@@ -342,10 +315,10 @@ set ttymouse=xterm2                  " to get the mouse working with Iterm2
 
 " COLOR: {{{1
 " settings {{{2
-syntax enable
-set background=dark
+syntax enable                                    " enable / noenable
+set background=dark                              " dark or light
 colorscheme solarized
-" details {{{2
+" doc {{{2
 "color molokai
 "set background=light
 "let g:solarized_termcolors=256
@@ -353,13 +326,14 @@ colorscheme solarized
 " FOLDING: {{{1
 " setings {{{2
 set foldenable
-": details {{{2
-" zv --> unflod at cursor
 " folding method
-set foldmethod=marker
+set foldmethod=marker "indent,
+set foldlevelstart=1
+" doc {{{2
 " zo --> Open
 " sc --> Close
-set foldlevelstart=1
+" zv --> unflod at cursor
+"
 " zr --> Fold reduce
 " zR --> Fold reduce max
 " zm --> fold more
@@ -375,10 +349,31 @@ set foldcolumn=3
 " settings {{{2
 set spell
 set spelllang=fr spell
-" details {{{2
+" doc {{{2
 " z= : mode choix
 " zg : ajoute d'un mot dans le dictionnaire local
 " zG : ajoute d'un mot dans le dictionnaire global
 " ]s : mot suivant
 " [s : mot précédent
 " CTRL+X puis "s" : liste de proposition en mode INSECTRL+X puis "s"RT
+
+" BUFFERS: {{{1
+" settings {{{2
+set nowrap " retour à la ligne
+" doc {{{2
+" :ls                                                      " (a=actif ; h=hiden)
+" :hide
+" :close
+" :n                                                       " new blank buffer
+" :3,5bd                                                   " delete 3 à 5
+" WINDOW: {{{1
+" settings {{{2
+" un buffer peut être caché en memoire mais pas affiché
+set hidden
+"
+" doc {{{2
+" <c-w>{s,v}     horizontal,vertical spilt
+" :hide ou :close
+" :only
+" <c-w>{h,j,k,l} move cursor
+" <c-w>{H,J,K,L} move window
