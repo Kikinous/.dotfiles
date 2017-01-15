@@ -1,4 +1,13 @@
-" Vundle Package manager {{{1
+" TODO_LIST: {{{1
+" Urgent {{{2
+"
+" Important {{{2
+"
+" Interessants {{{2
+" vimcast
+" vim hard way
+
+" VUNDLE PLUGIN MANAGER: {{{1
 " Setup vundle  {{{2
 " ------------------
 set nocompatible              " be iMproved, required
@@ -31,7 +40,7 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 
-" Pathogen : Plugin Manager {{{1
+" PATHOGEN PLUGIN MANAGER: {{{1
 " Install {{{2
 execute pathogen#infect()
 " Plugin: ctrl space {{{2
@@ -79,7 +88,7 @@ let g:tmuxline_preset = {
 "        \'z'       : '#(pmset -g batt|grep -o "[0-9][0-9]\%")+',
 "        \'z'       : '#H',
 
-" Plugin: plugin d'intetation {{{2
+" Plugin: plugin d'indentation {{{2
 " --------------------------------
 "autocmd VimEnter * IndentGuidesToggle
 let g:indent_guides_auto_colors = 0
@@ -97,15 +106,16 @@ let g:vim_markdown_folding_disabled=1
 au BufNewFile,BufRead *.ldg,*.ledger setf ledger | comp ledger
 
 " Plugin: Tabularize {{{2
-" -----------------------
 " alignement des & dans tabular de LaTeX :
 " '<,'>Tabularize /&
 
+" Plugin: Gundo {{{2
+" undo tree in style
+nnoremap <leader>g :GundoToggle<CR>
 
 
-
-" Suggestion de my-oh-zsh {{{1
-" references {{{2
+" MY_OH_ZSH: {{{1
+" doc {{{2
 " URL: http://vim.wikia.com/wiki/Example_vimrc
 " Authors: http://vim.wikia.com/wiki/Vim_on_Freenode
 " Description: A minimal, but feature rich, example .vimrc. If you are a
@@ -248,10 +258,11 @@ set tabstop=4
 
 
 
-" Python {{{1
-" setting {{{2
+" PYTHON: {{{1
+" Python setting {{{2
 let python_highlight_all=1
-" PEP8 indentation {{{2
+" Python doc {{{2
+" PEP8 indentation
 "au BufNewFile,BufRead *.py
 "     set tabstop=4
 "     set softtabstop=4
@@ -261,22 +272,18 @@ let python_highlight_all=1
 "     set autoindent
 "     set fileformat=unix
 
-" SNIPPETS {{{1
-" SNIPPETS LaTeX {{{3
+" SNIPPETS: {{{1
+" SNIPPETS LaTeX {{{2
 nnoremap ,tabular :-1read $HOME/.vim/snippets/LaTeX/tabular.tex<CR>
 nnoremap ,template :-1read $HOME/.vim/snippets/LaTeX/template.tex<CR>
 nnoremap ,makefile :-1read $HOME/.vim/snippets/LaTeX/makefile<CR>
 
-" learnvimscriptthehardway.stevelosh.com  {{{1
-" 1. Echoing messages {{{3
+" LEARNVIMSCRIPTTHEHARDWAY:  {{{1
+" learnvimscriptthehardway 1. Echoing messages {{{2
 " ------------------------
 echo "Pauffiner le vimrc"
 
-" 6.Leaders {{{3
-" --------------
-let mapleader= ","
-
-" 7.Editing your vimrc {{{3
+" learnvimscriptthehardway 7. Editing vimrc {{{2
 " -------------------------
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>ev :e $MYVIMRC<cr>
@@ -286,14 +293,14 @@ inoremap <esc> <Nop>
 vnoremap <esc> <Nop>
 map <C-i> <Nop>
 
-" Dispaly Option {{{1
-" settings {{{3
+" DISPLAY_OPTION: {{{1
+" settings {{{2
 set encoding=utf-8
 " pas de retour à la ligne (boolean option)
 set nowrap
 
-" Mapping {{{1
-" settings{{{3
+" MAPPING: {{{1
+" settings{{{2
 let mapleader= ","
 nmap <F2> :call Flake8()<CR>
 nmap <F3> :NumbersToggle<CR>
@@ -311,8 +318,8 @@ nnoremap <C-L> :nohl<CR><C-L>
 " unmap ex mode: 'Type visual to go into Normal mode.
 nnoremap Q <nop>
 
-" Autocommands {{{1
-" Setings: {{{3
+" AUTOCOMMANDS: {{{1
+" Setings: {{{2
 "set colorcolumn=80
 "Marque la 120eme colonnes
 autocmd WinEnter * 2mat ErrorMsg '\%81v.'
@@ -323,7 +330,6 @@ au BufNewFile,BufReadPost *.ldg highlight ExtraWhitespace ctermbg=red guibg=red 
 au BufNewFile,BufReadPost *.ldg match ExtraWhitespace /\s\+$/
 
 " Trailing_space {{{2
-" Settings: {{{3
 highlight ExtraWhitespace ctermbg=1 guibg=red
 match ExtraWhitespace /\s\+$/
 autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
@@ -334,20 +340,20 @@ set cursorline                       " highlight current line
 set clipboard=unnamed                " use the system clipboard
 set ttymouse=xterm2                  " to get the mouse working with Iterm2
 
-" Color {{{1
-" settings {{{3
+" COLOR: {{{1
+" settings {{{2
 syntax enable
 set background=dark
 colorscheme solarized
-" details {{{3
+" details {{{2
 "color molokai
 "set background=light
 "let g:solarized_termcolors=256
 
-" Folding {{{1
-" setings {{{3
+" FOLDING: {{{1
+" setings {{{2
 set foldenable
-" details {{{3
+": details {{{2
 " zv --> unflod at cursor
 " folding method
 set foldmethod=marker
@@ -360,16 +366,16 @@ set foldlevelstart=1
 " zM --> fold more max
 "
 " Nb colonne a gauche
-set foldcolumn=4
+set foldcolumn=3
 "set foldnestmax=10
 "set fde=getline(v:lnum)=~'^\\s*$'&&getline(v:lnum+1)=~'\\S'?'<1':1
 "set fdm=expr
 
-" Spelling {{{1
-" setings {{{3
+" SPELLING: {{{1
+" settings {{{2
 set spell
 set spelllang=fr spell
-" details {{{3
+" details {{{2
 " z= : mode choix
 " zg : ajoute d'un mot dans le dictionnaire local
 " zG : ajoute d'un mot dans le dictionnaire global
