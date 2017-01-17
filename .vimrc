@@ -111,7 +111,7 @@ au BufNewFile,BufRead *.ldg,*.ledger setf ledger | comp ledger
 
 " Plugin: Gundo {{{2
 " undo tree in style
-nnoremap <leader>g :GundoToggle<CR>
+nnoremap <leader>u :GundoToggle<CR>
 
 
 " GENERAL_CONFIGURATION: {{{1
@@ -127,17 +127,11 @@ nnoremap <leader>g :GundoToggle<CR>
 " no user should have to live without.
 "
 " Imperatif {{{2
-" Set 'nocompatible' to ward off unexpected things that your distro might
-" have made, as well as sanely reset options when re-sourcing .vimrc
-set nocompatible
-"
-" Attempt to determine the type of a file based on its name and possibly its
-" contents. Use this to allow intelligent auto-indenting for each filetype,
-" and for plugins that are filetype specific.
+set nocompatible                                 " Set 'nocompatible' to ward off unexpected things that your distro might have made, as well as sanely reset options when re-sourcing .vimrc
+" Attempt to determine the type of a file based on its name and possibly its contents.
+" Use this to allow intelligent auto-indenting for each filetype, and for plugins that are filetype specific.
 filetype indent plugin on
-"
-" Enable syntax highlighting
-syntax on
+syntax on                                        " Enable syntax highlighting
 
 " Recommandées {{{2
 " ======================
@@ -147,88 +141,47 @@ syntax on
 " window as mentioned above, and/or either of the following options:
 " set confirm
 " set autowriteall
-"
-" Better command-line completion
-set wildmenu
-"
-" Show partial commands in the last line of the screen
-set showcmd
-"
-" Highlight searches (use <C-L> to temporarily turn off highlighting; see the
-" mapping of <C-L> below)
-set hlsearch
+set wildmenu                                     " visual autocomplete for command menu
+set showcmd                                      " Show partial commands in the last line of the screen
+set hlsearch                                     " Highlight searches
+set incsearch                                    " highlight next matches
+set showmatch                                    " highlight matching [{()}]
 
 " Modelines have historically been a source of security vulnerabilities. As
 " such, it may be a good idea to disable them and use the securemodelines
 " script, <http://www.vim.org/scripts/script.php?script_id=1876>.
 " set nomodeline
-"
 
 " Utiles {{{2
 " ===========
-"
 " These are options that users frequently set in their .vimrc. Some of them
 " change Vim's behaviour in ways which deviate from the true Vi way, but
 " which are considered to add usability. Which, if any, of these options to
 " use is very much a personal preference, but they are harmless.
-"
-" Use case insensitive search, except when using capital letters
-set ignorecase
+
+set ignorecase                                   " Use case insensitive search, except when using capital letters
 set smartcase
-"
-" Allow backspacing over autoindent, line breaks and start of insert action
-set backspace=indent,eol,start
-"
-" When opening a new line and no filetype-specific indenting is enabled, keep
-" the same indent as the line you're currently on. Useful for READMEs, etc.
-set autoindent
-"
-" Stop certain movements from always going to the first character of a line.
-" While this behaviour deviates from that of Vi, it does what most users
-" coming from other editors would expect.
-set nostartofline
-"
-" Display the cursor position on the last line of the screen or in the status
-" line of a window
-set ruler
-"
-" Always display the status line, even if only one window is displayed
-"set laststatus=2
-"
-" Instead of failing a command because of unsaved changes, instead raise a
-" dialogue asking if you wish to save changed files.
-set confirm
-"
-" Use visual bell instead of beeping when doing something wrong
-set visualbell
-"
-" And reset the terminal code for the visual bell. If visualbell is set, and
-" this line is also included, vim will neither flash nor beep. If visualbell
-" is unset, this does nothing.
-set t_vb=
-"
-" Enable use of the mouse for all modes
-set mouse=a
-"
-" Set the command window height to 2 lines, to avoid many cases of having to
-" press <Enter> to continue"
-"set cmdheight=2
-"
-" Display line numbers on the left
-"set number "set nu! pour l'enlever
-"
-" Quickly time out on keycodes, but never time out on mappings
-set notimeout ttimeout ttimeoutlen=200
-"
-" Use <F11> to toggle between 'paste' and 'nopaste'
-set pastetoggle=<F11>
-"
+set backspace=indent,eol,start                   " Allow backspacing over autoindent, line breaks and start of insert action
+set autoindent                                   " When opening a new line and no filetype-specific indenting is enabled, keep the same indent as the line you're currently on. Useful for READMEs, etc.
+set nostartofline                                " Stop certain movements from always going to the first character of a line.
+set ruler                                        " Display the cursor position on the last line of the screen or in the status line of a window
+"set laststatus=2                                " Always display the status line, even if only one window is displayed
+set confirm                                      " instead raise a dialogue asking if you wish to save an changed but unsaved files.
+set visualbell                                   " Use visual bell instead of beeping when doing something wrong
+set t_vb=                                        " And reset the terminal code for the visual bell. If visualbell is set, and this line is also included, vim will neither flash nor beep. If visualbell is unset, this does nothing.
+set mouse=a                                      " Enable use of the mouse for all modes
+"set cmdheight=2                                 " Set command window to 2 lines => avoid to press <Enter> to continue
+"set number                                      " Display line numbers on the left
+set notimeout ttimeout ttimeoutlen=200           " Time out on keycodes, but never time out on mappings
+set pastetoggle=<F11>                            " Use <F11> to toggle between 'paste' and 'nopaste'
+set lazyredraw                                   " redraw only when needed => faster macro
 " FILES: {{{1
 " Settins {{{2
 " Search down into subfolder
 " provides tab-completion for all files-related task
 " :b substring --> ouvre le bon buffer
 set path+=**                                     " recursive subdirectory
+filetype indent on                                   " file specific indent
 " doc {{{2
 " https://www.youtube.com/watch?v=XA2WjJbmmoM&list=PL8tzorAO7s0jy7DQ3Q0FwF3BnXGQnDirs
 " hit tab to :find by partial match
@@ -277,6 +230,7 @@ set colorcolumn=100                              " Marque la 120eme colonnes
 autocmd BufEnter,InsertChange * 2mat ErrorMsg '\%101v.'
 
 
+
 " MAPPING: {{{1
 " Plugins {{{2
 let mapleader= ","
@@ -288,17 +242,18 @@ nmap <F8> :IndentGuidesToggle<CR>
 nmap <F9> :TagbarToggle<CR>
 
 " Outils {{{2
-nnoremap <leader>trailing /\s\+$/<CR>
-nnoremap ,sv :source $MYVIMRC<cr>
-nnoremap ,ev :edit $MYVIMRC<CR>
+nnoremap <Leader>trailing /\s\+$/<CR>
+nnoremap <Leader>sv :source $MYVIMRC<cr>
+nnoremap <Leader>ev :vsp $MYVIMRC<CR>
+nnoremap <Leader>ez :vsp ~/.zshrc<CR>
 "
 " keys {{{2
+" :verbose map <key>                             " what <key> is mapped to ?
 inoremap jk <esc>
 vnoremap jk <esc>
-
-" map <C-L> (redraw screen) to also turn off search highlighting until the next search
-nnoremap <C-L> :nohl<CR><C-L>
-" unmap ex mode: 'Type visual to go into Normal mode.
+"nnoremap <c-i> :tag<CR>                         " MARCHE PAS
+noremap <Leader><space> :nohlsearch<CR>          " turn off search highlight
+map Q <Nop>                                      " unmap ex mode: 'Type visual to go into Normal mode.
 
 " Anti-erreurs {{{2
 nnoremap Q <nop>
@@ -332,16 +287,27 @@ colorscheme solarized
 "set background=light
 "let g:solarized_termcolors=256
 
+
 " FOLDING: {{{1
 " setings {{{2
 set foldenable
-" folding method
-set foldmethod=marker "indent,
-set foldlevelstart=1
+set foldmethod=marker                            " indent, marker, indent, expr, syntax, diff
+set foldlevelstart=1                             " if sets to 0, all folds will be closed
+"set foldtext=foldtext()                         " default value
+set fillchars=vert:\|,fold:\                     " characteres du textfold
+set foldtext=MaFonctionDeFolding()
+function! MaFonctionDeFolding()
+  let line = getline(v:foldstart)
+  let sub = substitute(line, '/\*\|\*/\|{{{\d\=', '', 'g')
+  return v:folddashes . sub
+endfunction
+
+
 " doc {{{2
 " zo --> Open
 " sc --> Close
 " zv --> unflod at cursor
+" za --> toggle folding
 "
 " zr --> Fold reduce
 " zR --> Fold reduce max
@@ -349,11 +315,10 @@ set foldlevelstart=1
 " zM --> fold more max
 "
 " Nb colonne a gauche
-set foldcolumn=3
+set foldcolumn=0
 "set foldnestmax=10
 "set fde=getline(v:lnum)=~'^\\s*$'&&getline(v:lnum+1)=~'\\S'?'<1':1
 "set fdm=expr
-
 " SPELLING: {{{1
 " settings {{{2
 set spell
@@ -370,13 +335,14 @@ set spelllang=fr spell
 " settings {{{2
 set nowrap " retour à la ligne
 " doc {{{2
-" :ls                                                      " (a=actif ; h=hiden)
-" :hide
-" :close
-" :n                                                       " new blank buffer
-" :3,5bd                                                   " delete 3 à 5
+" :ls                                            " (a=actif ; h=hiden)
+" :hide                                          " hide buffer
+" :close                                         " close window
+" :n                                             " new blank buffer
+" :3,5bd                                         " delete 3 à 5
+" :bd                                            " close buffer and its window
 " WINDOW: {{{1
-" settings {{{2
+" " settings {{{2
 " un buffer peut être caché en memoire mais pas affiché
 set hidden
 "
