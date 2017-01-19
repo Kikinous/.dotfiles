@@ -203,9 +203,9 @@ let python_highlight_all=1
 
 " SNIPPETS: {{{1
 " SNIPPETS LaTeX {{{2
-nnoremap ,tabular  :-1read $HOME/.vim/bundle/tex/ftdetect/tabular.tex<CR>
-nnoremap ,template :-1read $HOME/.vim/bundle/tex/ftdetect/template.tex<CR>
-nnoremap ,makefile :-1read $HOME/.vim/bundle/tex/ftdetect/makefile<CR>
+autocmd FileType tex nnoremap ,tabular  :-1read $HOME/.vim/bundle/tex/ftdetect/tabular.tex<CR>
+autocmd FileType tex nnoremap ,template :-1read $HOME/.vim/bundle/tex/ftdetect/template.tex<CR>
+autocmd FileType tex nnoremap ,makefile :-1read $HOME/.vim/bundle/tex/ftdetect/makefile<CR>
 
 " VARIABLES:  {{{1
 " learnvimscriptthehardway 1. Echoing messages {{{2
@@ -227,7 +227,9 @@ set softtabstop=4                                " number of spaces in tab when 
 set expandtab                                    " tabs are spaces
 set tabstop=4                                    " number of visual spaces when editing
 set colorcolumn=100                              " Marque la 120eme colonnes
-autocmd BufEnter,InsertChange * 2mat ErrorMsg '\%101v.'
+autocmd BufEnter,InsertChange * 2mat ErrorMsg '\%121v.'
+" doc {{{2
+" noh                                            " clean search highlights
 
 
 
@@ -241,11 +243,13 @@ nmap <F7> :NERDTreeToggle<CR>
 nmap <F8> :IndentGuidesToggle<CR>
 nmap <F9> :TagbarToggle<CR>
 
-" Outils {{{2
+" Leader {{{2
 nnoremap <Leader>trailing /\s\+$/<CR>
 nnoremap <Leader>sv :source $MYVIMRC<cr>
-nnoremap <Leader>ev :vsp $MYVIMRC<CR>
-nnoremap <Leader>ez :vsp ~/.zshrc<CR>
+nnoremap <Leader>ev :e $MYVIMRC<CR>
+nnoremap <Leader>ez :e ~/.zshrc<CR>
+nnoremap <Leader>et :e ~/.tmux.conf<CR>
+"
 "
 " keys {{{2
 " :verbose map <key>                             " what <key> is mapped to ?
@@ -257,14 +261,19 @@ map Q <Nop>                                      " unmap ex mode: 'Type visual t
 
 " Anti-erreurs {{{2
 nnoremap Q <nop>
+" doc {{{2
+" :map                                           " list all mapppings
 
 " AUTOCOMMANDS: {{{1
 " Setings: {{{2
 "Pour la coloration syntaxique Arduino
 "autocmd! BufNewFile,BufRead *.ino setlocal ft=arduino
-au BufNewFile,BufReadPost *.ino,*.pde set filetype=cpp                             "handle arduino file as cpp file
-au BufNewFile,BufReadPost *.ldg highlight ExtraWhitespace ctermbg=red guibg=red    "show whitespace in ledger file
-au BufNewFile,BufReadPost *.ldg match ExtraWhitespace /\s\+$/
+augroup TipeDeFichier                            " avoid duplicating autocommand (en faisant :so .vimrc p.ex.)
+        autocmd!                                 " clear the group
+        autocmd BufNewFile,BufReadPost *.ino,*.pde set filetype=cpp                             "handle arduino file as cpp file
+        autocmd BufNewFile,BufReadPost *.ldg highlight ExtraWhitespace ctermbg=red guibg=red    "show whitespace in ledger file
+        autocmd BufNewFile,BufReadPost *.ldg match ExtraWhitespace /\s\+$/
+augroup END
 
 " Trailing_space {{{2
 highlight ExtraWhitespace ctermbg=1 guibg=red
@@ -292,7 +301,7 @@ colorscheme solarized
 " setings {{{2
 set foldenable
 set foldmethod=marker                            " indent, marker, indent, expr, syntax, diff
-set foldlevelstart=1                             " if sets to 0, all folds will be closed
+set foldlevelstart=0                             " if sets to 0, all folds will be closed
 "set foldtext=foldtext()                         " default value
 set fillchars=vert:\|,fold:\                     " characteres du textfold
 set foldtext=MaFonctionDeFolding()
@@ -301,8 +310,6 @@ function! MaFonctionDeFolding()
   let sub = substitute(line, '/\*\|\*/\|{{{\d\=', '', 'g')
   return v:folddashes . sub
 endfunction
-
-
 " doc {{{2
 " zo --> Open
 " sc --> Close
@@ -348,7 +355,10 @@ set hidden
 "
 " doc {{{2
 " <c-w>{s,v}     horizontal,vertical spilt
+" :split or :vsplit
 " :hide ou :close
 " :only
 " <c-w>{h,j,k,l} move cursor
 " <c-w>{H,J,K,L} move window
+" <c-w>c         close
+" <c-w><c-w>     toggle active window
