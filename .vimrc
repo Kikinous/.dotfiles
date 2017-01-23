@@ -17,23 +17,20 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 " call vundle#begin('~/some/path/here')
-"
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'https://github.com/Valloric/YouCompleteMe.git'
-"
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
 " Vundle commands {{{2
-" --------------------
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
-"
 " Brief help
 " :PluginList       - lists configured plugins
 " :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginUpdate     - installs plugins; append `!` to update or just :PluginUpdate
 " :PluginSearch foo - searches for foo; append `!` to refresh local cache
 " :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
 "
@@ -43,8 +40,11 @@ filetype plugin indent on    " required
 " PATHOGEN PLUGIN MANAGER: {{{1
 " Install {{{2
 execute pathogen#infect()
-" Plugin: ctrl space {{{2
 "
+"
+" plugin: YouCompleteMe {{{2
+
+" plugin: ctrl space {{{2
 let g:airline_exclude_preview = 1
 set hidden
 set showtabline=0
@@ -97,15 +97,7 @@ let g:indent_guides_auto_colors = 0
 autocmd VimEnter,BufWinEnter,Colorscheme * :hi IndentGuidesOdd  guibg=black       "solarized dark
 autocmd VimEnter,BufWinEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey    "solarized dark
 
-" Plugin: markdown file {{{2
-" --------------------------
-let g:vim_markdown_folding_disabled=1
-
-" Plugin: ledgeriler {{{2
-" -----------------------
-au BufNewFile,BufRead *.ldg,*.ledger setf ledger | comp ledger
-
-" Plugin: Tabularize {{{2
+" Plugin: Tabular {{{2
 " alignement des & dans tabular de LaTeX :
 " '<,'>Tabularize /&
 
@@ -113,68 +105,6 @@ au BufNewFile,BufRead *.ldg,*.ledger setf ledger | comp ledger
 " undo tree in style
 nnoremap <leader>u :GundoToggle<CR>
 
-
-" GENERAL_CONFIGURATION: {{{1
-" doc {{{2
-" URL: http://vim.wikia.com/wiki/Example_vimrc
-" Authors: http://vim.wikia.com/wiki/Vim_on_Freenode
-" Description: A minimal, but feature rich, example .vimrc. If you are a
-"              newbie, basing your first .vimrc on this file is a good choice.
-"              If you're a more advanced user, building your own .vimrc based
-"              on this file is still a good idea.
-"
-" These options and commands enable some very useful features in Vim, that
-" no user should have to live without.
-"
-" Imperatif {{{2
-set nocompatible                                 " Set 'nocompatible' to ward off unexpected things that your distro might have made, as well as sanely reset options when re-sourcing .vimrc
-" Attempt to determine the type of a file based on its name and possibly its contents.
-" Use this to allow intelligent auto-indenting for each filetype, and for plugins that are filetype specific.
-filetype indent plugin on
-syntax on                                        " Enable syntax highlighting
-
-" Recommandées {{{2
-" ======================
-"
-" Note that not everyone likes working this way (with the hidden option).
-" Alternatives include using tabs or split windows instead of re-using the same
-" window as mentioned above, and/or either of the following options:
-" set confirm
-" set autowriteall
-set wildmenu                                     " visual autocomplete for command menu
-set showcmd                                      " Show partial commands in the last line of the screen
-set hlsearch                                     " Highlight searches
-set incsearch                                    " highlight next matches
-set showmatch                                    " highlight matching [{()}]
-
-" Modelines have historically been a source of security vulnerabilities. As
-" such, it may be a good idea to disable them and use the securemodelines
-" script, <http://www.vim.org/scripts/script.php?script_id=1876>.
-" set nomodeline
-
-" Utiles {{{2
-" ===========
-" These are options that users frequently set in their .vimrc. Some of them
-" change Vim's behaviour in ways which deviate from the true Vi way, but
-" which are considered to add usability. Which, if any, of these options to
-" use is very much a personal preference, but they are harmless.
-
-set ignorecase                                   " Use case insensitive search, except when using capital letters
-set smartcase
-set backspace=indent,eol,start                   " Allow backspacing over autoindent, line breaks and start of insert action
-set autoindent                                   " When opening a new line and no filetype-specific indenting is enabled, keep the same indent as the line you're currently on. Useful for READMEs, etc.
-set nostartofline                                " Stop certain movements from always going to the first character of a line.
-set ruler                                        " Display the cursor position on the last line of the screen or in the status line of a window
-"set laststatus=2                                " Always display the status line, even if only one window is displayed
-set confirm                                      " instead raise a dialogue asking if you wish to save an changed but unsaved files.
-set visualbell                                   " Use visual bell instead of beeping when doing something wrong
-set t_vb=                                        " And reset the terminal code for the visual bell. If visualbell is set, and this line is also included, vim will neither flash nor beep. If visualbell is unset, this does nothing.
-set mouse=a                                      " Enable use of the mouse for all modes
-"set cmdheight=2                                 " Set command window to 2 lines => avoid to press <Enter> to continue
-"set number                                      " Display line numbers on the left
-set notimeout ttimeout ttimeoutlen=200           " Time out on keycodes, but never time out on mappings
-set pastetoggle=<F11>                            " Use <F11> to toggle between 'paste' and 'nopaste'
-set lazyredraw                                   " redraw only when needed => faster macro
 " FILES: {{{1
 " Settins {{{2
 " Search down into subfolder
@@ -203,35 +133,44 @@ let python_highlight_all=1
 
 " SNIPPETS: {{{1
 " SNIPPETS LaTeX {{{2
-autocmd FileType tex nnoremap ,tabular  :-1read $HOME/.vim/bundle/tex/ftdetect/tabular.tex<CR>
-autocmd FileType tex nnoremap ,template :-1read $HOME/.vim/bundle/tex/ftdetect/template.tex<CR>
-autocmd FileType tex nnoremap ,makefile :-1read $HOME/.vim/bundle/tex/ftdetect/makefile<CR>
+augroup Snippet_Latex
+autocmd!
+autocmd FileType tex  nnoremap <leader>tabular  :-1read $HOME/.vim/snippets/LaTeX/tabular.tex<CR>
+autocmd FileType tex  nnoremap <leader>template :-1read $HOME/.vim/snippets/LaTeX/template.tex<CR>
+autocmd FileType tex  nnoremap <leader>graphics :-1read $HOME/.vim/snippets/LaTeX/graphics.tex<CR>
+autocmd FileType tex  nnoremap <leader>tikz     :-1read $HOME/.vim/snippets/LaTeX/tikz.tex<CR>
+autocmd FileType make nnoremap <leader>makefile :-1read $HOME/.vim/snippets/LaTeX/makefile<CR>
+augroup END
 
-" VARIABLES:  {{{1
-" learnvimscriptthehardway 1. Echoing messages {{{2
-" ------------------------
-let bonjour = "Pauffiner le vimrc"
-"silent echo bonjour                             " silent = pour eviter le prompt
-echo bonjour
 
-" learnvimscriptthehardway 7. Editing vimrc {{{2
-nnoremap <leader>sv :source $MYVIMRC<cr>
-nnoremap <leader>ev :e $MYVIMRC<cr>
+" SEARCH: {{{1
+" settings {{{2
+set hlsearch                                     " Highlight searches
+set incsearch                                    " highlight next matches
+set showmatch                                    " highlight matching [{()}]
+set ignorecase                                   " Use case insensitive search, except when using capital letters
+set smartcase
+" doc {{{2
+" :noh                                           " stop highlighting
+
 " DISPLAY_OPTION: {{{1
 " settings {{{2
 set encoding=utf-8
-" pas de retour à la ligne (boolean option)
-set nowrap
+set wrap                                         " wrap lines longer than window
+set linebreak                                    " wrap lines at proper ('breakat') character
+let &showbreak='↪'                               " symbol showing line have been wrapped
 " set shiftwidth=4
 set softtabstop=4                                " number of spaces in tab when editing
 set expandtab                                    " tabs are spaces
 set tabstop=4                                    " number of visual spaces when editing
-set colorcolumn=100                              " Marque la 120eme colonnes
+set autoindent                                   " When opening a new line and no filetype-specific indenting is enabled, keep the same indent as the line you're currently on. Useful for READMEs, etc.
+set backspace=indent,eol,start                   " Allow backspacing over autoindent, line breaks and start of insert action
+set nostartofline                                " Stop certain movements from always going to the first character of a line.
+"set colorcolumn=120                             " Marque la 120eme colonnes
+set textwidth=119                                " textwidth for
 autocmd BufEnter,InsertChange * 2mat ErrorMsg '\%121v.'
 " doc {{{2
 " noh                                            " clean search highlights
-
-
 
 " MAPPING: {{{1
 " Plugins {{{2
@@ -265,12 +204,12 @@ nnoremap Q <nop>
 " :map                                           " list all mapppings
 
 " AUTOCOMMANDS: {{{1
-" Setings: {{{2
+" Settings: {{{2
 "Pour la coloration syntaxique Arduino
 "autocmd! BufNewFile,BufRead *.ino setlocal ft=arduino
 augroup TipeDeFichier                            " avoid duplicating autocommand (en faisant :so .vimrc p.ex.)
-        autocmd!                                 " clear the group
-        autocmd BufNewFile,BufReadPost *.ino,*.pde set filetype=cpp                             "handle arduino file as cpp file
+"       autocmd!                                 " clear the group
+"       autocmd BufNewFile,BufReadPost *.ino,*.pde set filetype=cpp                             " remplacé par .vim/ftdetect/arduino.vim
         autocmd BufNewFile,BufReadPost *.ldg highlight ExtraWhitespace ctermbg=red guibg=red    "show whitespace in ledger file
         autocmd BufNewFile,BufReadPost *.ldg match ExtraWhitespace /\s\+$/
 augroup END
@@ -289,13 +228,63 @@ set ttymouse=xterm2                  " to get the mouse working with Iterm2
 " COLOR: {{{1
 " settings {{{2
 syntax enable                                    " enable / noenable
-set background=dark                              " dark or light
-colorscheme solarized
+if filereadable(expand("~/.vimrc_background"))
+        let base16colorspace=256
+        source ~/.vimrc_background               " la cmd base16_monokai change ce fichier et vim s'ajuste
+endif
+" GENERAL_CONFIGURATION: {{{1
 " doc {{{2
-"color molokai
-"set background=light
-"let g:solarized_termcolors=256
+" URL: http://vim.wikia.com/wiki/Example_vimrc
+" Authors: http://vim.wikia.com/wiki/Vim_on_Freenode
+" Description: A minimal, but feature rich, example .vimrc. If you are a
+"              newbie, basing your first .vimrc on this file is a good choice.
+"              If you're a more advanced user, building your own .vimrc based
+"              on this file is still a good idea.
+"
+" These options and commands enable some very useful features in Vim, that
+" no user should have to live without.
+let bonjour = "Pauffiner le vimrc"
+"echom bonjour                                   " message d'acceuil
+"silent echom bonjour                            " silent = pour eviter le prompt
+"
+" Imperatif {{{2
+set nocompatible                                 " Set 'nocompatible' to ward off unexpected things that your distro might have made, as well as sanely reset options when re-sourcing .vimrc
+" Attempt to determine the type of a file based on its name and possibly its contents.
+" Use this to allow intelligent auto-indenting for each filetype, and for plugins that are filetype specific.
+filetype indent plugin on
+syntax on                                        " Enable syntax coloring
 
+" Recommandées {{{2
+" ======================
+"
+" Note that not everyone likes working this way (with the hidden option).
+" Alternatives include using tabs or split windows instead of re-using the same
+" window as mentioned above, and/or either of the following options:
+" set confirm
+" set autowriteall
+set wildmenu                                     " visual autocomplete for command menu
+set showcmd                                      " Show partial commands in the last line of the screen
+" Modelines have historically been a source of security vulnerabilities. As
+" such, it may be a good idea to disable them and use the securemodelines
+" script, <http://www.vim.org/scripts/script.php?script_id=1876>.
+" set nomodeline
+
+" Utiles {{{2
+" ===========
+" These are options that users frequently set in their .vimrc. Some of them
+" change Vim's behaviour in ways which deviate from the true Vi way, but
+" which are considered to add usability. Which, if any, of these options to
+" use is very much a personal preference, but they are harmless.
+set ruler                                        " Display the cursor position on the last line of the screen or in the status line of a window
+"set laststatus=2                                " Always display the status line, even if only one window is displayed
+set confirm                                      " instead raise a dialogue asking if you wish to save an changed but unsaved files.
+set visualbell                                   " Use visual bell instead of beeping when doing something wrong
+set t_vb=                                        " And reset the terminal code for the visual bell. If visualbell is set, and this line is also included, vim will neither flash nor beep. If visualbell is unset, this does nothing.
+set mouse=a                                      " Enable use of the mouse for all modes
+"set cmdheight=2                                 " Set command window to 2 lines => avoid to press <Enter> to continue
+set notimeout ttimeout ttimeoutlen=200           " Time out on keycodes, but never time out on mappings
+set pastetoggle=<F11>                            " Use <F11> to toggle between 'paste' and 'nopaste'
+set lazyredraw                                   " redraw only when needed => faster macro
 
 " FOLDING: {{{1
 " setings {{{2
@@ -340,14 +329,15 @@ set spelllang=fr spell
 
 " BUFFERS: {{{1
 " settings {{{2
-set nowrap " retour à la ligne
+"
 " doc {{{2
 " :ls                                            " (a=actif ; h=hiden)
 " :hide                                          " hide buffer
 " :close                                         " close window
 " :n                                             " new blank buffer
-" :3,5bd                                         " delete 3 à 5
-" :bd                                            " close buffer and its window
+" :bd                                            " buffer delete
+" :bd k l m                                      " buffer delete k l et m
+" :3,5bd                                         " buffer delete 3 à 5
 " WINDOW: {{{1
 " " settings {{{2
 " un buffer peut être caché en memoire mais pas affiché
@@ -362,3 +352,14 @@ set hidden
 " <c-w>{H,J,K,L} move window
 " <c-w>c         close
 " <c-w><c-w>     toggle active window
+" TABS: {{{1
+" " settings {{{2
+"
+" doc {{{2
+" <c-w>{s,v}     horizontal,vertical spilt
+" gt || gT       next || prior tab
+" :close
+" :tabe
+" <C-w>T         move split to new tab
+
+

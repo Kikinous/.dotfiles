@@ -2,11 +2,9 @@
 # Setup {{{2
 export ZSH=/Users/julien/.oh-my-zsh
 # Theme {{{2
-# Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
+ZSH_THEME="robbyrussell"                         #theme et couleurs, mais couleurs changées ci-dessous
 # Update {{{2
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
@@ -30,6 +28,12 @@ ZSH_THEME="robbyrussell"
 # Uncomment the following line to display red dots whilst waiting for completion.
 # COMPLETION_WAITING_DOTS="true"
 
+# Color base16 {{{2
+# https://github.com/chriskempson/base16-shell
+# $base16(tab completion)
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+alias color="echo $BASE16_THEME"
 # Divers {{{2
 # Uncomment the following line to enable command auto-correction.
 ENABLE_CORRECTION="true"
@@ -98,7 +102,8 @@ export PKG_CONFIG_PATH="/opt/local/lib/pkgconfig"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias stat="stat -x"
 alias tree="tree -C"
+alias tree="tree -L 4 ; echo 'ATTENTION alias : max level = 4'"
 
-# shell scripts {{{1
+# Shell scripts {{{1
 # oh-my-zsh.sh {{{2
 source $ZSH/oh-my-zsh.sh
